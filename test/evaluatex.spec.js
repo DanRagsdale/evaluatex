@@ -27,6 +27,11 @@ describe("Evaluatex", function () {
         test("x^y + z", 13, { x: 2, y: 3, z: 5 });
     });
 
+	it("allows complex constants", function () {
+        test("α", 5, { α: 5 });
+        test("α * β", 25, { α: 5, β: 5 });
+	});
+
     it("doesn't overwrite constants with variables", function () {
         test("x", 5, { /* constant */ x: 5 }, { /* variable - should be ignored */ x: 6 });
     });

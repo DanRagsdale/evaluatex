@@ -88,7 +88,8 @@ class Lexer {
         // Try to match each pattern in tokenPatterns to the remaining buffer
         for (const [type, regex] of Token.patterns) {
             // Force the regex to match only at the beginning of the string
-            const regexFromStart = new RegExp(/^/.source + regex.source);
+            const regexFromStart = new RegExp(/^/.source + regex.source, regex.flags);
+			//console.log(regexFromStart);
 
             // When `len` is undefined, substr reads to the end
             let match = regexFromStart.exec(this.buffer.substr(0, len));
