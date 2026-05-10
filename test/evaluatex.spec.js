@@ -33,7 +33,12 @@ describe("Evaluatex", function () {
         
 		test("\\pi", Math.PI);
 		test("\\pi + e", Math.PI + Math.E);
-		test("1\ +\\ \\ \\ 2",3);
+	});
+
+	it("allows complex whitespace", function () {
+		test("1\\ +\\ \\ 2",3);
+		test("1 + 2 ",3);
+		test(" \\ 1 +\\ 2 \\ \\  ", 3);
 	});
 
     it("doesn't overwrite constants with variables", function () {
