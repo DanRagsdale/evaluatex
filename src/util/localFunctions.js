@@ -28,6 +28,8 @@ export const rootn = function rootn(x, n) {
     return Math.pow(x, 1 / n);
 };
 
+export const texrootn = (n,x) => rootn(x,n);
+
 export const sec = function src(x) {
     return 1 / Math.cos(x);
 };

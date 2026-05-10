@@ -4,7 +4,7 @@ import localFunctions from "./util/localFunctions";
 import replaceToken from './util/replaceToken';
 
 // Single-arg tokens are those that, when in LaTeX mode, read only one character as their argument OR a block delimited by { }. For example, `x ^ 24` would be read as `SYMBOL(x) POWER NUMBER(2) NUMBER(4).
-const CHAR_ARG_TOKENS = [Token.TYPE_POWER, Token.TYPE_COMMAND];
+const CHAR_ARG_TOKENS = [Token.TYPE_POWER, Token.TYPE_COMMAND, Token.TYPE_TEXROOT];
 
 const DEFAULT_OPTS = {
     latex: false
@@ -45,7 +45,7 @@ class Lexer {
     /**
      * Lexes an expression or sub-expression.
      */
-    lexExpression(charMode = false) {
+    lexExpression(charMode = false, squareBracketMode = false) {
 		// Deletes whitespace first and then checks if there are tokens left.
         while (this.skipWhitespace() || this.hasNext()) {
             let token = charMode ? this.nextCharToken() : this.next();
@@ -54,8 +54,13 @@ class Lexer {
             if (this.opts.latex && isCharArgToken(token)) {
                 let arity = 1;
                 if (token.type === Token.TYPE_COMMAND) {
-                    arity = arities[token.value.substr(1).toLowerCase()];
+                    arity = arities[token.value.substring(1).toLowerCase()];
                 }
+				// Handle the optional index for LaTeX roots
+				else if (token.type === Token.TYPE_TEXROOT && this.buffer.charAt(0) === "[") {
+                	this.lexExpression(false, true);
+				}
+
                 for (let i = 0; i < arity; i++) {
                     this.lexExpression(true);
                 }
@@ -67,6 +72,9 @@ class Lexer {
             if (charMode || isEndGroupToken(token)) {
                 return;
             }
+			else if (squareBracketMode && token.type === Token.TYPE_RPAREN && token.value === "]") {
+				return;
+			}
         }
     }
 
