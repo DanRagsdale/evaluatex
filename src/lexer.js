@@ -117,15 +117,16 @@ class Lexer {
         return this.next(1);
     }
 
+	/**
+	 * Replaces tokens that are LaTeX symbols with their corresponding Unicode characters. 
+	 * For example, `\pi` becomes `π`.
+	 */
 	replaceTexSymbols() {
         for (const token of this.tokens) {
 			if (token.type === Token.TYPE_COMMAND) {
 				if(token.value in texCharacters) {
 					token.value = texCharacters[token.value];
-					console.log(token.value);
-					//token.value = "PI";
 					token.type = Token.TYPE_SYMBOL;
-					//console.log(token.value);
 				}
 			}
 		}
