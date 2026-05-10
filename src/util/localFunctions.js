@@ -40,7 +40,7 @@ export const cot = function cot(x) {
     return 1 / Math.tan(x);
 };
 
-const locals = { fact, frac, logn, rootn, sec, csc, cot };
+const locals = { fact, frac, logn, rootn, sec, csc, cot, π : Math.PI, pi : Math.PI, e : Math.E };
 
 // Copy things from Math. Can't use Object.assign since Math has non-enumerable properties.
 for (const k of Object.getOwnPropertyNames(Math)) {
