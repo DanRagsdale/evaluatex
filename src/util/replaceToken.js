@@ -1,4 +1,5 @@
 import Token from "../Token";
+import texCharacters from "./texCharacters";
 
 // This table lists tokens that should be replaced by other tokens before parsing.
 // The key has format "{token type}:{token value}"
@@ -24,5 +25,8 @@ export default function replaceToken(token) {
     if (token.type === Token.TYPE_COMMAND && ["\\cdot", "\\times"].includes(token.value)) {
         return new Token(Token.TYPE_TIMES, "*");
     }
+	else if (token.type === Token.TYPE_COMMAND && token.value in texCharacters) {
+		return new Token(Token.TYPE_SYMBOL, texCharacters[token.value]);		
+	}
     return token;
 };
