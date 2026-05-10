@@ -27,7 +27,7 @@ describe("Evaluatex", function () {
         test("x^y + z", 13, { x: 2, y: 3, z: 5 });
     });
 
-	it("allows complex constants", function () {
+	it("allows non-latin characters as constants", function () {
         test("α", 5, { α: 5 });
         test("α * β", 25, { α: 5, β: 5 });
         
@@ -35,7 +35,7 @@ describe("Evaluatex", function () {
 		test("\\pi + e", Math.PI + Math.E);
 	});
 
-	it("allows complex whitespace", function () {
+	it("properly handles complicated whitespace", function () {
 		test("1\\ +\\ \\ 2",3);
 		test("1 + 2 ",3);
 		test(" \\ 1 +\\ 2 \\ \\  ", 3);
