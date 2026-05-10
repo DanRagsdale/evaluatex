@@ -3,6 +3,8 @@ import arities from "./util/arities";
 import localFunctions from "./util/localFunctions";
 import replaceToken from './util/replaceToken';
 
+import texCharacters from "./util/texCharacters";
+
 // Single-arg tokens are those that, when in LaTeX mode, read only one character as their argument OR a block delimited by { }. For example, `x ^ 24` would be read as `SYMBOL(x) POWER NUMBER(2) NUMBER(4).
 const CHAR_ARG_TOKENS = [Token.TYPE_POWER, Token.TYPE_COMMAND];
 
@@ -38,6 +40,7 @@ class Lexer {
 
     lex() {
         this.lexExpression();
+		this.replaceTexSymbols();
         this.replaceConstants();
         this.replaceCommands();
     }
@@ -113,6 +116,20 @@ class Lexer {
         }
         return this.next(1);
     }
+
+	replaceTexSymbols() {
+        for (const token of this.tokens) {
+			if (token.type === Token.TYPE_COMMAND) {
+				if(token.value in texCharacters) {
+					token.value = texCharacters[token.value];
+					console.log(token.value);
+					//token.value = "PI";
+					token.type = Token.TYPE_SYMBOL;
+					//console.log(token.value);
+				}
+			}
+		}
+	}
 
     replaceCommands() {
         for (const token of this.tokens) {

@@ -30,6 +30,9 @@ describe("Evaluatex", function () {
 	it("allows complex constants", function () {
         test("α", 5, { α: 5 });
         test("α * β", 25, { α: 5, β: 5 });
+        
+		test("\\pi", Math.PI);
+		test("\\pi + e", Math.PI + Math.E);
 	});
 
     it("doesn't overwrite constants with variables", function () {
@@ -38,6 +41,7 @@ describe("Evaluatex", function () {
 
     it("supports Javascript's Math functions and constants", function () {
         test("PI", Math.PI);
+        test("pi", Math.PI);
         test("sqrt(4)", 2);
         test("hypot(10)", 10);
         test("hypot(3, 4)", 5);
