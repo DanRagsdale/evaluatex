@@ -49,11 +49,8 @@ class Lexer {
      * Lexes an expression or sub-expression.
      */
     lexExpression(charMode = false) {
-        while (this.hasNext()) {
-			this.skipWhitespace();
-			if (!this.hasNext()) {
-				return;
-			}
+		// Deletes whitespace first and then checks if there are tokens left.
+        while (this.skipWhitespace() || this.hasNext()) {
             let token = charMode ? this.nextCharToken() : this.next();
             this.tokens.push(replaceToken(token));
 
@@ -86,8 +83,6 @@ class Lexer {
      * @returns {Token}
      */
     next(len = undefined) {
-        //this.skipWhitespace();
-
         if (!this.hasNext()) {
             throw "Lexer error: reached end of stream";
         }
@@ -114,7 +109,6 @@ class Lexer {
      * Tokenizes the next single character of the buffer, unless the following token is a LaTeX command, in which case the entire command is tokenized.
      */
     nextCharToken() {
-        //this.skipWhitespace();
         if (this.buffer.charAt(0) === "\\") {
             return this.next();
         }
@@ -170,9 +164,7 @@ class Lexer {
      */
     skipWhitespace() {
         const regex = new RegExp(/^/.source + Token.patterns.get(Token.TYPE_WHITESPACE).source);
-		while (regex.test(this.buffer)) {	
-			this.buffer = this.buffer.replace(regex, "");
-		}
+		this.buffer = this.buffer.replace(regex, "");
     }
 }
 
