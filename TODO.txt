@@ -1,1 +1,10 @@
 - acot, acsc, asec in localFunctions.js
+
+- Clean up texroot code
+
+- Support all LaTeX Whitespace
+- Support LaTeX identifies for constants and variables. E.g. \hat{x}
+
+- Update deprecated functions and libraries
+-- No longer require openssl legacy provider: export NODE_OPTIONS=--openssl-legacy-provider
+

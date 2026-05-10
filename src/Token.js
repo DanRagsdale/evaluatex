@@ -31,6 +31,7 @@ export default class Token {
     static TYPE_MINUS = "MINUS";
     static TYPE_TIMES = "TIMES";
     static TYPE_DIVIDE = "DIVIDE";
+	static TYPE_TEXROOT = "TEXROOT";
     static TYPE_COMMAND = "COMMAND";
     static TYPE_SYMBOL = "SYMBOL";
     static TYPE_WHITESPACE = "WHITESPACE";
@@ -47,6 +48,7 @@ export default class Token {
         [Token.TYPE_MINUS, /-/],
         [Token.TYPE_TIMES, /\*/],
         [Token.TYPE_DIVIDE, /\//],
+		[Token.TYPE_TEXROOT, /\\sqrt/],
         [Token.TYPE_COMMAND, /\\[A-Za-z]+/],
         [Token.TYPE_SYMBOL, new RegExp("[\\p{L}_][\\p{L}_0-9]*", "u")], // Allow Unicode letters
         [Token.TYPE_WHITESPACE, /(\\?\s)+/], // Whitespace or tex whitespace e.g. "\ \ "

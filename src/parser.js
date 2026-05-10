@@ -1,7 +1,7 @@
 import Node from "./Node";
 import Token from "./Token";
 import arities from "./util/arities";
-import { fact } from "./util/localFunctions";
+import { fact, texrootn } from "./util/localFunctions";
 
 // Parser
 // ======
@@ -190,6 +190,28 @@ class Parser {
                 node.addChild(this.power());
             }
         }
+		else if (this.accept(Token.TYPE_TEXROOT)) {
+			node = new Node(Node.TYPE_FUNCTION, texrootn);
+			node.name = this.prevToken.name;
+
+			//Deal with the optional degree signifier
+			if (this.currentToken.value === "[") {
+				this.expect(Token.TYPE_LPAREN);
+				node.addChild(this.sum());
+
+				this.expect(Token.TYPE_RPAREN);
+			} else {
+                node.addChild(new Node(Node.TYPE_NUMBER, 2.0));
+			}
+			//Deal with the body of the root
+			if (this.accept(Token.TYPE_LPAREN)){
+				node.addChild(this.sum());
+                this.expect(Token.TYPE_RPAREN);
+			}
+            else {
+                node.addChild(this.power());
+			}
+		}
         else if (this.accept(Token.TYPE_MINUS)) {
             node = new Node(Node.TYPE_NEGATE).addChild(this.power());
         }

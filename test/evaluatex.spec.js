@@ -160,12 +160,19 @@ describe("Evaluatex", function () {
           test(`${x}\\cdot${y}`, x * y, {}, {}, { latex: true });
         }
       }
-  });
+  	});
+	
+	it("supports LaTeX roots", function () {
+		test("\\sqrt[2]{9}", 3, {}, {}, { latex: true });
+		test("\\sqrt[3]8", 2, {}, {}, { latex: true });
+		test("\\sqrt[1+2]{3*3*3}", 3, {}, {}, { latex: true });
+	})
 
     it("supports LaTeX typesetting", function () {
         test("\\frac{1}{2}x^{-\\frac{1}{2}}", 1 / 6, { x: 9 }, {}, { latex: true });
         test("\\frac 1{20}3", 3/20, {}, {}, { latex: true });
         test("\\sqrt 45", 10, {}, {}, { latex: true });
+        test("\\sqrt[3]83", 6, {}, {}, { latex: true });
 
        const  fn = evaluatex("\\frac 1{20}3", {}, { latex: true });
         fn;
