@@ -166,6 +166,9 @@ class Lexer {
      */
     skipWhitespace() {
         const regex = new RegExp(/^/.source + Token.patterns.get(Token.TYPE_WHITESPACE).source);
+		//while (regex.test(this.buffer)) {	
+		//	this.buffer = this.buffer.replace(regex, "");
+		//}
         this.buffer = this.buffer.replace(regex, "");
     }
 }

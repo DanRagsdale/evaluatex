@@ -49,7 +49,7 @@ export default class Token {
         [Token.TYPE_DIVIDE, /\//],
         [Token.TYPE_COMMAND, /\\[A-Za-z]+/],
         [Token.TYPE_SYMBOL, new RegExp("[\\p{L}_][\\p{L}_0-9]*", "u")], // Allow Unicode letters
-        [Token.TYPE_WHITESPACE, /\s+/], // Whitespace
+        [Token.TYPE_WHITESPACE, /\\?\s+/], // Whitespace or tex whitespace e.g. "\ "
         [Token.TYPE_ABS, /\|/],
         [Token.TYPE_BANG, /!/],
         [Token.TYPE_COMMA, /,/],
