@@ -24,17 +24,23 @@ export const logn = function logn(x, b) {
     return Math.log(x) / Math.log(b);
 };
 
+export const texlog = function texlog() {
+	if (arguments.length === 2) {
+		return logn(arguments[1], arguments[0]);
+	} else {
+		return Math.log(arguments[0]);
+	}
+}
+
 export const rootn = function rootn(x, n) {
     return Math.pow(x, 1 / n);
 };
 
-export const texrootn = (n,x) => rootn(x,n);
-
-export const texlog = function texlog(a, b, c) {
-	if (arguments.length == 2) {
-		return logn(arguments[1], arguments[0]);
+export const texroot = function texroot() {
+	if (arguments.length === 2) {
+		return rootn(arguments[1], arguments[0]);
 	} else {
-		return Math.log(arguments[0]);
+		return Math.sqrt(arguments[0]);
 	}
 }
 
@@ -52,7 +58,7 @@ export const cot = function cot(x) {
 
 const locals = { 
 	fact, frac, logn, rootn, sec, csc, cot,
-	texlog,
+	texlog, texroot,
 	π : Math.PI, pi : Math.PI, e : Math.E };
 
 // Copy things from Math. Can't use Object.assign since Math has non-enumerable properties.

@@ -26,6 +26,8 @@ export default function replaceToken(token) {
         return new Token(Token.TYPE_TIMES, "*");
     } else if (token.type === Token.TYPE_COMMAND && token.value === "\\log"){
         return new Token(Token.TYPE_COMMAND, "\\texlog");
+	} else if (token.type === Token.TYPE_COMMAND && token.value === "\\sqrt"){
+        return new Token(Token.TYPE_COMMAND, "\\texroot");
 	}
 	else if (token.type === Token.TYPE_COMMAND && token.value in texCharacters) {
 		return new Token(Token.TYPE_SYMBOL, texCharacters[token.value]);		

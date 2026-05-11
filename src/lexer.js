@@ -4,7 +4,8 @@ import localFunctions from "./util/localFunctions";
 import replaceToken from './util/replaceToken';
 
 // Single-arg tokens are those that, when in LaTeX mode, read only one character as their argument OR a block delimited by { }. For example, `x ^ 24` would be read as `SYMBOL(x) POWER NUMBER(2) NUMBER(4).
-const CHAR_ARG_TOKENS = [Token.TYPE_POWER, Token.TYPE_COMMAND, Token.TYPE_TEXROOT];
+const CHAR_ARG_TOKENS = [Token.TYPE_POWER, Token.TYPE_COMMAND];
+const CHAR_ARG_COMMANDS = ["\\frac", "\\texroot"];
 
 const DEFAULT_OPTS = {
     latex: false
@@ -48,27 +49,27 @@ class Lexer {
     lexExpression(charMode = false, squareBracketMode = false) {
 		// Deletes whitespace first and then checks if there are tokens left.
         while (this.skipWhitespace() || this.hasNext()) {
-            let token = charMode ? this.nextCharToken() : this.next();
-            this.tokens.push(replaceToken(token));
+            let token = replaceToken(charMode ? this.nextCharToken() : this.next());
+            this.tokens.push(token);
 
-			/* if has OptionalArguments */ 
-			if (token.type === Token.TYPE_COMMAND && token.value === "\\log"){
+			/* Handle LaTeX commands with optional arguments*/ 
+			if (token.type === Token.TYPE_COMMAND && token.value === "\\texlog"){
 				if (this.buffer[0] === "_") {
 					this.tokens.push(new Token(Token.TYPE_SYMBOL, "_"));
 					this.buffer = this.buffer.substring(1);
 					this.lexExpression(true);
 				}
-			}	
+			} else if (token.type === Token.TYPE_COMMAND && token.value === "\\texroot") {
+				if (this.buffer[0] === "[") {
+					this.lexExpression(false, true);
+				}
+			}
 
             if (this.opts.latex && isCharArgToken(token)) {
                 let arity = 1;
                 if (token.type === Token.TYPE_COMMAND) {
                     arity = arities[token.value.substring(1).toLowerCase()];
                 }
-				// Handle the optional index for LaTeX roots
-				else if (token.type === Token.TYPE_TEXROOT && this.buffer[0] === "[") {
-                	this.lexExpression(false, true);
-				}
 
                 for (let i = 0; i < arity; i++) {
                     this.lexExpression(true);
@@ -167,12 +168,12 @@ class Lexer {
     }
 }
 
-function isCharArgToken(token) {
+export const isCharArgToken = function isCharArgToken(token) {
 	if (CHAR_ARG_TOKENS.indexOf(token.type) === -1) {
-		return false
+		return false;
 	};
-	// LaTeX functions like \\sin 2pi should treat 2\\pi as a single argument
-	if (token.type === Token.TYPE_COMMAND && token.value !== "\\frac") {
+	// LaTeX functions like \\sin 10 should treat 10 as a single argument
+	if (token.type === Token.TYPE_COMMAND && CHAR_ARG_COMMANDS.indexOf(token.value) === -1) {
 		return false
 	}
 	return true;

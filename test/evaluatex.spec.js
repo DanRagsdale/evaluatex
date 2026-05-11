@@ -149,6 +149,8 @@ describe("Evaluatex", function () {
         test("\\frac {4 ^ 2} 3", 16 / 3, {}, {}, { latex: true });
         test("\\frac {(4 ^ 2)} {3}", 16 / 3, {}, {}, { latex: true });
         test("\\frac {4 ^ 2} 32", 32 / 3, {}, {}, { latex: true });
+        
+		test("\\cos 2\pi", 1, {}, {}, { latex: true });
     });
 
     it("support LaTeX times and cdot", function () {
