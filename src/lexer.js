@@ -48,7 +48,12 @@ class Lexer {
      */
     lexExpression(charMode = false, squareBracketMode = false) {
 		// Deletes whitespace first and then checks if there are tokens left.
-        while (this.skipWhitespace() || this.hasNext()) {
+        while (true) {
+			this.skipWhitespace()
+			if (!this.hasNext()) {
+				break;
+			}
+
             let token = replaceToken(charMode ? this.nextCharToken() : this.next());
             this.tokens.push(token);
 

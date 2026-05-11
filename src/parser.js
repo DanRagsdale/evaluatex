@@ -107,7 +107,12 @@ class Parser {
         return node;
     }
 
-	// Calculate the product, but only for numbers and symbols. E.g. 2\pi, but not 2\sin 
+	/**
+	 * Calculate the product, but only implicit multiplication for numbers and symbols.
+	 * This makes certain expressions feel more intuitive without parentheses.
+	 * E.g. \sin 2x \cos 2x will parse as (\sin 2x) (\cos 2x)
+	 * @returns {node}
+	 */
 	numProduct() {
         let node = new Node(Node.TYPE_PRODUCT);
         node.addChild(this.power());
@@ -205,13 +210,13 @@ class Parser {
 				else {
 					node.addChild(this.power());
 				}
+			} else if (["frac", "texroot"].indexOf(cmdToken.name) >= 0){
+            	for (let i = 0; i < arities[cmdToken.name]; i++) {
+					node.addChild(this.val());
+				}
 			} else {
             	for (let i = 0; i < arities[cmdToken.name]; i++) {
-					if(isCharArgToken(new Token(cmdToken.type, "\\" + cmdToken.name))) {
-						node.addChild(this.val());
-					} else {
-						node.addChild(this.numProduct());
-					}
+					node.addChild(this.numProduct());
             	}
 			}
         }

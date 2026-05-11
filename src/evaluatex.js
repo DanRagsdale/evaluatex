@@ -10,7 +10,7 @@ import parser from "./parser";
  */
 export default function evaluatex(expression, constants = {}, options = {}) {
     const tokens = lexer(expression, constants, options);
-    const ast = parser(tokens).simplify();
+    const ast = parser(tokens);
     const fn = function(variables = {}) { return ast.evaluate(variables); };
     fn.ast = ast;
     fn.expression = expression;
