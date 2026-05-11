@@ -214,5 +214,8 @@ describe("Evaluatex", function () {
 		test("\\log_3 (9\\sin\\frac{\\pi}{2})", 2, {}, {}, { latex: true });
 		test("\\log\\left(e\\cdot e\\cdot e\\right)\\cdot\\left(\\sin\\pi\\right)", 0, {}, {}, { latex: true });
 		test("\\log e\\sin\\frac{\\pi}{2}\\cos2\\pi", 1, {}, {}, { latex: true });
+
+		test("5^{-∞}", 0, {}, {}, { latex: true })
+		test("cos\\frac2∞", 1, {}, {}, { latex: true })
 	});
 });

@@ -38,7 +38,9 @@ const texCharacters = {
 "\\varpi" : "ϖ",
 "\\varrho" : "ϱ",
 "\\varsigma" : "ς",
-"\\varphi" : "φ"
+"\\varphi" : "φ",
+
+"\\infty" : "∞",
 };
 
 export default texCharacters;

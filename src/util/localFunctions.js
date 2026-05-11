@@ -59,7 +59,7 @@ export const cot = function cot(x) {
 const locals = { 
 	fact, frac, logn, rootn, sec, csc, cot,
 	texlog, texroot,
-	π : Math.PI, pi : Math.PI, e : Math.E };
+	π : Math.PI, pi : Math.PI, e : Math.E, "∞" : Number.POSITIVE_INFINITY};
 
 // Copy things from Math. Can't use Object.assign since Math has non-enumerable properties.
 for (const k of Object.getOwnPropertyNames(Math)) {
