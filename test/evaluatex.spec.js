@@ -209,4 +209,9 @@ describe("Evaluatex", function () {
         assert.include(err.message, "Symbol a is undefined or not a number");
       }
     });
+
+	it("Misc Tests", function () {
+		test("\\log_3 (9\\sin\\frac{\\pi}{2})", 2, {}, {}, { latex: true });
+		test("\\log\\left(e\\cdot e\\cdot e\\right)\\cdot\\left(\\sin\\pi\\right)", 0, {}, {}, { latex: true });
+	});
 });

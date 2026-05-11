@@ -107,6 +107,23 @@ class Parser {
         return node;
     }
 
+	// Calculate the product, but only for numbers and symbols. E.g. 2\pi, but not 2\sin 
+	numProduct() {
+        let node = new Node(Node.TYPE_PRODUCT);
+        node.addChild(this.power());
+		
+		while (true) {
+			if (this.accept(Token.TYPE_SYMBOL) ||
+				this.accept(Token.TYPE_NUMBER)) {
+				this.cursor--;
+				node.addChild(this.power());
+			} else {
+				break;
+			}
+		} 
+		return node;
+	}
+
     product() {
         let node = new Node(Node.TYPE_PRODUCT);
         node.addChild(this.power());
@@ -126,7 +143,8 @@ class Parser {
             }
             else if (this.accept(Token.TYPE_SYMBOL) ||
                 this.accept(Token.TYPE_NUMBER) ||
-                this.accept(Token.TYPE_FUNCTION)) {
+                this.accept(Token.TYPE_FUNCTION) ||
+				this.accept(Token.TYPE_COMMAND)) {
                 this.cursor--;
                 node.addChild(this.power());
             }
@@ -172,7 +190,7 @@ class Parser {
 					this.expect(Token.TYPE_SYMBOL);
             	    node.addChild(this.val());
 				}
-            	node.addChild(this.product());
+            	node.addChild(this.numProduct());
 			} else if(node.name === "texroot") {
 				if (this.currentToken.value === "[") {
 					this.expect(Token.TYPE_LPAREN);
@@ -190,9 +208,9 @@ class Parser {
 			} else {
             	for (let i = 0; i < arities[cmdToken.name]; i++) {
 					if(isCharArgToken(new Token(cmdToken.type, "\\" + cmdToken.name))) {
-            	    	node.addChild(this.val());
+						node.addChild(this.val());
 					} else {
-						node.addChild(this.product());
+						node.addChild(this.numProduct());
 					}
             	}
 			}
