@@ -24,7 +24,9 @@ export default function replaceToken(token) {
     // }
     if (token.type === Token.TYPE_COMMAND && ["\\cdot", "\\times"].includes(token.value)) {
         return new Token(Token.TYPE_TIMES, "*");
-    }
+    } else if (token.type === Token.TYPE_COMMAND && token.value === "\\log"){
+        return new Token(Token.TYPE_COMMAND, "\\texlog");
+	}
 	else if (token.type === Token.TYPE_COMMAND && token.value in texCharacters) {
 		return new Token(Token.TYPE_SYMBOL, texCharacters[token.value]);		
 	}

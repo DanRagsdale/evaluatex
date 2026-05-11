@@ -51,13 +51,22 @@ class Lexer {
             let token = charMode ? this.nextCharToken() : this.next();
             this.tokens.push(replaceToken(token));
 
+			/* if has OptionalArguments */ 
+			if (token.type === Token.TYPE_COMMAND && token.value === "\\log"){
+				if (this.buffer[0] === "_") {
+					this.tokens.push(new Token(Token.TYPE_SYMBOL, "_"));
+					this.buffer = this.buffer.substring(1);
+					this.lexExpression(true);
+				}
+			}	
+
             if (this.opts.latex && isCharArgToken(token)) {
                 let arity = 1;
                 if (token.type === Token.TYPE_COMMAND) {
                     arity = arities[token.value.substring(1).toLowerCase()];
                 }
 				// Handle the optional index for LaTeX roots
-				else if (token.type === Token.TYPE_TEXROOT && this.buffer.charAt(0) === "[") {
+				else if (token.type === Token.TYPE_TEXROOT && this.buffer[0] === "[") {
                 	this.lexExpression(false, true);
 				}
 
@@ -159,7 +168,14 @@ class Lexer {
 }
 
 function isCharArgToken(token) {
-    return CHAR_ARG_TOKENS.indexOf(token.type) !== -1;
+	if (CHAR_ARG_TOKENS.indexOf(token.type) === -1) {
+		return false
+	};
+	// LaTeX functions like \\sin 2pi should treat 2\\pi as a single argument
+	if (token.type === Token.TYPE_COMMAND && token.value !== "\\frac") {
+		return false
+	}
+	return true;
 }
 
 function isStartGroupToken(token) {

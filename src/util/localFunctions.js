@@ -30,6 +30,14 @@ export const rootn = function rootn(x, n) {
 
 export const texrootn = (n,x) => rootn(x,n);
 
+export const texlog = function texlog(a, b, c) {
+	if (arguments.length == 2) {
+		return logn(arguments[1], arguments[0]);
+	} else {
+		return Math.log(arguments[0]);
+	}
+}
+
 export const sec = function src(x) {
     return 1 / Math.cos(x);
 };
@@ -42,7 +50,10 @@ export const cot = function cot(x) {
     return 1 / Math.tan(x);
 };
 
-const locals = { fact, frac, logn, rootn, sec, csc, cot, π : Math.PI, pi : Math.PI, e : Math.E };
+const locals = { 
+	fact, frac, logn, rootn, sec, csc, cot,
+	texlog,
+	π : Math.PI, pi : Math.PI, e : Math.E };
 
 // Copy things from Math. Can't use Object.assign since Math has non-enumerable properties.
 for (const k of Object.getOwnPropertyNames(Math)) {

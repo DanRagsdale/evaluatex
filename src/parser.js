@@ -165,10 +165,18 @@ class Parser {
             const cmdToken = this.prevToken;
             node = new Node(Node.TYPE_FUNCTION, cmdToken.value);
             node.name = cmdToken.name;
-
-            for (let i = 0; i < arities[cmdToken.name]; i++) {
-                node.addChild(this.val());
-            }
+		
+			if (node.name === "texlog") {
+				if (this.currentToken.value === "_") {
+					this.expect(Token.TYPE_SYMBOL);
+            	    node.addChild(this.val());
+				}
+            	node.addChild(this.val());
+			} else {
+            	for (let i = 0; i < arities[cmdToken.name]; i++) {
+            	    node.addChild(this.val());
+            	}
+			}
         }
         else if (this.accept(Token.TYPE_FUNCTION)) {
             node = new Node(Node.TYPE_FUNCTION, this.prevToken.value);

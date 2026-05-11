@@ -6,6 +6,7 @@
 export default {
     "frac": 2,
     "sqrt": 1,
+	"log": 1,
     "sin": 1,
     "cos": 1,
     "tan": 1,

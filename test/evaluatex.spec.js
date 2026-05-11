@@ -166,13 +166,23 @@ describe("Evaluatex", function () {
 		test("\\sqrt[2]{9}", 3, {}, {}, { latex: true });
 		test("\\sqrt[3]8", 2, {}, {}, { latex: true });
 		test("\\sqrt[1+2]{3*3*3}", 3, {}, {}, { latex: true });
-	})
+	});
+
+	it("supports LaTeX logarithms", function () {
+		test("\\log 2", Math.log(2), {}, {}, { latex: true });
+		test("\\log 10", Math.log(10), {}, {}, { latex: true });
+		test("\\log_39", 2, {}, {}, { latex: true });
+		test("\\log_{10} 100", 2, {}, {}, { latex: true });
+		test("\\log_{1+1+1} (3*3*3*3)", 4, {}, {}, { latex: true });
+	});
 
     it("supports LaTeX typesetting", function () {
         test("\\frac{1}{2}x^{-\\frac{1}{2}}", 1 / 6, { x: 9 }, {}, { latex: true });
         test("\\frac 1{20}3", 3/20, {}, {}, { latex: true });
         test("\\sqrt 45", 10, {}, {}, { latex: true });
         test("\\sqrt[3]83", 6, {}, {}, { latex: true });
+        
+		test("\\cos \\pi + 2", 1, {}, {}, { latex: true });
 
        const  fn = evaluatex("\\frac 1{20}3", {}, { latex: true });
         fn;
